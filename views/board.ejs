@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>/<%= board.name %>/ - <%= board.long_name %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>/<%= board.name %>/ - <%= board.long_name %></h1>
+    <p><%= board.description %></p>
+  </header>
+
+  <form action="/search" method="GET">
+    <input type="search" name="q" placeholder="Search posts...">
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="threads">
+    <% threads.forEach(thread => { %>
+      <div class="thread">
+        <% if (thread.fname) { %>
+          <img src="/thumbs/<%= thread.fname %>" class="thumb">
+        <% } %>
+        <h3><%= thread.subject %></h3>
+        <p><%= thread.text %></p>
+        <span class="info">ID: <%= thread.id %> | Replies: <%= thread.reply_count %></span>
+      </div>
+    <% }); %>
+  </div>
+
+  <form action="/<%= board.name %>/post" method="POST" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Name">
+    <input type="text" name="subject" placeholder="Subject">
+    <textarea name="post_content"></textarea>
+    <input type="file" name="file">
+    <button type="submit">Post</button>
+  </form>
+  <% if (isModerator) { %>
+    <div class="mod-tools">
+      <button class="delete-post" data-id="<%= post.id %>">Delete</button>
+      <button class="ban-user" data-ip="<%= post.ip %>">Ban</button>
+    </div>
+  <% } %>
+</body>
+</html>
