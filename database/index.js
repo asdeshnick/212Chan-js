@@ -15,6 +15,13 @@ const Post = require('../models/post.model')(sequelize);
 
 // Синхронизация
 sequelize.sync({ force: false });
+await Board.findOrCreate({
+  where: { name: 'b' },
+  defaults: {
+    long_name: 'Random',
+    description: 'Обсуждение всего на свете'
+  }
+});
 
 module.exports = {
   sequelize,

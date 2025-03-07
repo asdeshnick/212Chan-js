@@ -1,9 +1,13 @@
-const express = require('express');
+import express from 'express';
+import { sequelize } from './database.js';
+
+const app = express();
+
+
 const { sequelize } = require('./database');
 const boardRoutes = require('./routes/board.routes');
 const indexRoutes = require('./routes/index.routes');
 
-const app = express();
 
 // Database sync
 sequelize.sync()
@@ -11,6 +15,7 @@ sequelize.sync()
   .catch(console.error);
 
 // Middleware
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());

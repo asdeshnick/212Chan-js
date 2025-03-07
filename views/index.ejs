@@ -13,6 +13,19 @@
         </a>
       </li>
     <% }); %>
+    <% if (boards && boards.length) { %>
+      <ul>
+        <% boards.forEach(board => { %>
+          <li>
+            <a href="/<%= board.name %>">
+              /<%= board.name %>/ - <%= board.long_name %>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>Нет доступных досок</p>
+    <% } %>
   </ul>
 </body>
 </html>
