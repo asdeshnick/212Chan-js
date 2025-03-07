@@ -3,7 +3,7 @@ const postService = require('../services/post.service'); // Добавьте э�
 const cacheService = require('../services/cache.service');
 const logger = require('../utils/logger');
 
-class BoardController {
+export default class BoardController {
   async showBoard(req, res) {
     const { board } = req.params;
     const cacheKey = `board:${board}`;
@@ -132,4 +132,5 @@ class BoardController {
   }
 }
 
-module.exports = new BoardController();
+const boardController = new BoardController();
+export { boardController };

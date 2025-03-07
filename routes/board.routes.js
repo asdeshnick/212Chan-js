@@ -1,9 +1,8 @@
-import express from 'express';
-const router = express.Router();
-const boardController = require('../controllers/board.controller');
+import { Router } from 'express';
+import { boardController } from '../controllers/board.controller.js';
 
-// Правильное использование методов контроллера
+const router = Router();
 router.get('/:board', boardController.showBoard);
 router.get('/:board/thread/:id', boardController.showThread);
 
-module.exports = router;
+export default router;
