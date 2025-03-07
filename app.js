@@ -1,40 +1,33 @@
 const express = require('express');
-const { sequelize } = require('./database'); // ❶ Исправленный импорт
-const app = express();
+const { sequelize } = require('./database');
+const boardRoutes = require('./routes/board.routes');
 const indexRoutes = require('./routes/index.routes');
-app.use('/', indexRoutes);
+
+const app = express();
 
 // Database sync
-sequelize.sync({ force: false }) // ❷ Добавьте опции синхронизации
+sequelize.sync()
   .then(() => console.log('Database connected'))
   .catch(console.error);
 
 // Middleware
-app.set('view engine', 'ejs'); // ❸ Изменен порядок
-app.use(express.static('public')); // Статические файлы
-app.use('/', indexRoutes); // Главная страница
-app.use('/b', boardRoutes); // Доски
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
-const boardRoutes = require('./routes/board.routes');
-const adminRoutes = require('./routes/admin.routes'); // ❺ Явный импорт
-app.use('/', boardRoutes);
-app.use('/admin', adminRoutes);
+app.use('/', indexRoutes);
+app.use('/b', boardRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).render('error', { message: 'Internal Server Error' }); // ❻ Используйте шаблон
+  res.status(500).send('Something broke!');
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
-console.log(`Server will run on port: ${process.env.PORT || 3000}`);
 module.exports = app;
-
-const cacheService = require('./services/cache.service');
-
-cacheService.client.on('ready', () => {
-  console.log('Redis connected');
-});
