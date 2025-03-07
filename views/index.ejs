@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Доски</title>
+</head>
+<body>
+  <h1>Список досок</h1>
+  <ul>
+    <% boards.forEach(board => { %>
+      <li>
+        <a href="/<%= board.name %>">
+          /<%= board.name %>/ - <%= board.long_name %>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>

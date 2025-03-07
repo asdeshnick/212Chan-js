@@ -1,4 +1,3 @@
-// database/index.js
 const { Sequelize } = require('sequelize');
 const config = require('../config');
 
@@ -10,14 +9,15 @@ const sequelize = new Sequelize(config.database.url, {
   logging: process.env.NODE_ENV === 'development'
 });
 
+// Импорт моделей
+const Board = require('../models/board.model')(sequelize);
+const Post = require('../models/post.model')(sequelize);
+
+// Синхронизация
+sequelize.sync({ force: false });
+
 module.exports = {
   sequelize,
-  testConnection: async () => {
-    try {
-      await sequelize.authenticate();
-      console.log('Database connection OK!');
-    } catch (error) {
-      console.error('Unable to connect to database:', error);
-    }
-  }
+  Board,
+  Post
 };

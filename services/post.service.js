@@ -1,10 +1,6 @@
-const Post = require('../models/post.model');
+const { Post } = require('../database');
 
 class PostService {
-  async createPost(postData) {
-    return Post.create(postData);
-  }
-
   async getThreads(board, limit = 10) {
     return Post.findAll({
       where: { 
@@ -15,14 +11,6 @@ class PostService {
       order: [['last_bump', 'DESC']],
       limit
     });
-  }
-
-  async bumpThread(threadId) {
-    const thread = await Post.findByPk(threadId);
-    if (thread) {
-      thread.last_bump = new Date();
-      await thread.save();
-    }
   }
 }
 
